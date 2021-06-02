@@ -1,0 +1,65 @@
+Given integer array nums, return the third maximum number in this array. If the third maximum does not exist, return the maximum number.
+
+ 
+
+Example 1:
+
+Input: nums = [3,2,1]
+Output: 1
+Explanation: The third maximum is 1.
+Example 2:
+
+Input: nums = [1,2]
+Output: 2
+Explanation: The third maximum does not exist, so the maximum (2) is returned instead.
+Example 3:
+
+Input: nums = [2,2,3,1]
+Output: 1
+Explanation: Note that the third maximum here means the third maximum distinct number.
+Both numbers with value 2 are both considered as second maximum.
+ 
+
+Constraints:
+
+1 <= nums.length <= 104
+-231 <= nums[i] <= 231 - 1
+
+
+
+
+
+
+class Solution {
+public:
+int thirdMax(vector<int>& nums) {
+    if(nums.size()==1)
+        return nums[0];
+    if(nums.size()==2)
+        return max(nums[0],nums[1]);
+long f = LONG_MIN;
+long s = LONG_MIN;
+long t = LONG_MIN;
+for (int n: nums) {
+	if (n == f || n == s || n == t)
+		continue;
+	if (n > f) {
+		t = s;
+		s = f;
+		f = n;
+	} else if (n > s) {
+		t = s;
+		s = n;
+	} else if (n > t) {
+		t = n;
+	}
+}
+if (t != LONG_MIN)
+	return (int)t;
+else if (f != LONG_MIN)
+	return (int)f;
+else
+	return (int)s;
+}
+    
+};
