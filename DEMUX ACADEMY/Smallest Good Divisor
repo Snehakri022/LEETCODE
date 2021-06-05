@@ -1,0 +1,102 @@
+Given an array of integers A containinf n integers. Given an integer k.
+
+A divisor d is considered good if:
+
+Σ ceil( ai / d ) ≤ k
+
+where, ai denotes the ith integer of A
+
+Find the smallest good divisor
+
+Input
+The first line contains two integers --n and k.
+
+The second line contains n integers -- a1,a2,...,an
+Output
+An integer -- smallest good divisor
+
+Constraints
+1≤ n ≤5.104
+n≤ k ≤106
+1≤ ai ≤106
+Example
+Input
+
+
+10 19
+6 11 1 10 9 3 19 14 5 8
+Output
+6
+Input
+2 16
+14 9
+Output
+2
+
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int getSum(vector<int>& arr, int divisor) {
+
+    int sum = 0;
+
+    for (int i = 0; i < arr.size(); i++) {
+
+        sum += ceil((float)arr[i]/divisor);
+
+    }
+
+    return sum;
+
+}
+
+int main() {
+
+    int n, threshold, max_num = INT_MIN;
+
+    cin >> n >> threshold;
+
+    vector<int> arr(n);
+
+    for(int i = 0; i < n; i++) {
+
+        cin >> arr[i];
+
+        max_num = max(max_num, arr[i]);
+
+    }
+
+    // p(x): sum(x) <= threshold
+
+    // first T
+
+    int lo = 1, hi = max_num, mid;
+
+    while (lo < hi) {
+
+        // Mid computation
+
+        mid = lo + (hi - lo)/2;
+
+        // Decision
+
+        if (getSum(arr, mid) <= threshold)
+
+            hi = mid;
+
+        else
+
+            lo = mid + 1;
+
+    }
+
+    // No sanity check needed.
+
+    cout << lo;
+
+}
+
+
