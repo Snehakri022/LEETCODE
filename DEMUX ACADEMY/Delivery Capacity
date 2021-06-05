@@ -1,0 +1,133 @@
+Kamaraj works for zomato and has to deliver n items. All the items have differnt weights, weight of ith item is denoted by wi.
+
+He has to complete all these deliveries within d days, or his boss will fire him.
+
+Kamaraj decides to complete multiple deliveries in a day, inorder to achieve the target.
+
+He delivers items in a sack, a particular sack can only carry at max x weight.
+
+Help him decide minimum x required to complete the job.
+
+For more clarity, see sample examples.
+
+Input
+The first line contains two integers -- n and d
+
+The second line contains n integers -- w1,w2,...,wn
+Output
+An integer x -- minimum weight of sack, he should carry
+
+Constraints
+1≤ n ≤5.104
+1≤ d ≤n
+1≤ wi ≤500
+Example
+Input
+
+
+2 1
+11 8
+Output
+
+
+19
+Explanation
+
+As he has to complete all deliveries in one day: 11 + 8 = 19
+
+Input
+
+
+8 4
+19 3 18 18 5 5 11 17
+Output
+
+
+28
+Explanation
+
+Day 1: [19, 3], total weight = 22 ≤ 28
+Day 2: [18], total weight = 18 ≤ 28
+Day 3: [18, 5, 5], total weight = 28 ≤ 28
+Day 4: [11, 17], total weight = 28 ≤ 28
+If we use a sack whose capacity is less than 28, then the job can never be done in 4 days.
+
+
+
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int getTrip(vector<int>& packages, int capacity) {
+
+    int trip_count = 0, curr_trip_capacity = 0;
+
+    for(int i = 0; i < packages.size(); i++) {
+
+        if (curr_trip_capacity + packages[i] <= capacity) {
+
+            curr_trip_capacity += packages[i];
+
+        } else {
+
+            trip_count++;
+
+            curr_trip_capacity = packages[i];
+
+        }
+
+    }
+
+    return (trip_count + 1);
+
+}
+
+int main () {
+
+    int n, D, max_weight = INT_MIN, sum_weights = 0;
+
+    cin >> n >> D;
+
+    vector<int> packages(n);
+
+    for (int i = 0; i < n; i++) {
+
+        cin >> packages[i];
+
+        max_weight = max(max_weight, packages[i]);
+
+        sum_weights += packages[i];
+
+    }
+
+    int lo = max_weight, hi = sum_weights, mid;
+
+    // Searching packages.
+
+    // max(packages[i]) to sum(packages[i])
+
+    // p(x): trip(x) <= D
+
+    // First T
+
+    while (lo < hi) {
+
+        mid = lo + (hi - lo)/2;
+
+        if (getTrip(packages, mid) <= D)
+
+            hi = mid;
+
+        else
+
+            lo = mid + 1;
+
+    }
+
+    // No sanity check.
+
+    cout << lo << endl;
+
+}
